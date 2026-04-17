@@ -1,0 +1,142 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin User",
+      "email": "admin@test.com",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "jane@example.com",
+      "password": "password123",
+      "role": "editor"
+    },
+    {
+      "id": 3,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "password": "password123",
+      "role": "viewer"
+    },
+    {
+      "name": "Huzaifa",
+      "email": "Huzaifa@test.com",
+      "password": "Huzaifa124",
+      "role": "editor",
+      "id": 4
+    }
+  ],
+  "notes": [
+    {
+      "id": 2,
+      "title": "Marketing Launch Plan",
+      "content": "Shift launch to Q3. Need to refine the mesh-gradient landing page and finalize the SaaS pricing tiers.",
+      "ownerId": 2,
+      "ownerName": "Jane Doe",
+      "updatedAt": "2026-04-17T14:20:00.000Z",
+      "collaborators": [
+        {
+          "id": 1,
+          "name": "Admin User",
+          "email": "admin@test.com",
+          "role": "admin"
+        },
+        {
+          "id": 3,
+          "name": "Bob Smith",
+          "email": "bob@example.com",
+          "role": "viewer"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    {
+      "id": 1,
+      "action": "create",
+      "userName": "Admin User",
+      "noteTitle": "Nebula Core Architecture",
+      "createdAt": "2026-04-17T14:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "action": "update",
+      "userName": "Jane Doe",
+      "noteTitle": "Nebula Core Architecture",
+      "createdAt": "2026-04-17T14:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "action": "create",
+      "userName": "Jane Doe",
+      "noteTitle": "Marketing Launch Plan",
+      "createdAt": "2026-04-17T14:25:00.000Z"
+    },
+    {
+      "id": 4,
+      "action": "share",
+      "userName": "Admin User",
+      "noteTitle": "Marketing Launch Plan",
+      "createdAt": "2026-04-17T14:30:00.000Z"
+    },
+    {
+      "action": "create",
+      "userName": "Admin User",
+      "noteTitle": "hello",
+      "createdAt": "2026-04-17T14:53:26.610Z",
+      "id": 5
+    },
+    {
+      "action": "update",
+      "userName": "Admin User",
+      "noteTitle": "hello",
+      "createdAt": "2026-04-17T14:53:47.423Z",
+      "id": 6
+    },
+    {
+      "action": "share",
+      "userName": "Admin User",
+      "noteTitle": "hello",
+      "createdAt": "2026-04-17T14:53:56.238Z",
+      "id": 7
+    },
+    {
+      "action": "share",
+      "userName": "Admin User",
+      "noteTitle": "hello",
+      "createdAt": "2026-04-17T14:54:03.181Z",
+      "id": 8
+    },
+    {
+      "action": "delete",
+      "userName": "Admin User",
+      "noteTitle": "hello",
+      "createdAt": "2026-04-17T14:54:23.784Z",
+      "id": 9
+    },
+    {
+      "action": "update",
+      "userName": "Admin User",
+      "noteTitle": "Billex",
+      "createdAt": "2026-04-17T15:32:29.268Z",
+      "id": 10
+    },
+    {
+      "action": "delete",
+      "userName": "Admin User",
+      "noteTitle": "Billex",
+      "createdAt": "2026-04-17T15:32:41.833Z",
+      "id": 11
+    },
+    {
+      "action": "share",
+      "userName": "Admin User",
+      "noteTitle": "Marketing Launch Plan",
+      "createdAt": "2026-04-17T15:37:12.335Z",
+      "id": 12
+    }
+  ]
+}
