@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user?.token) {
-      const newSocket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5000", {
+      const newSocket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:10000", {
         auth: {
           token: user.token
         }

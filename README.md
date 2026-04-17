@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Nebula-Notes
-=======
 # 🌌 Nebula Notes | Enterprise Collaboration Platform
 
 ![Nebula Notes Hero](./nebula_notes_hero_1776438888373.png)
@@ -72,16 +69,11 @@ Create a `.env` file from the provided example:
 cp .env.example .env
 ```
 
-### 3. Launch Development Environment
-Run both the frontend and the mock backend simultaneously:
-
-```bash
-# Terminal 1: Vite Development Server
+# Launch Development Environment
 npm run dev
 
-# Terminal 2: Mock API Server (json-server)
+# Launch Mock API Backend (Separate Terminal)
 npm run server
-```
 
 ## 👥 Default Test Users
 | Name | Email | Password | Role |
@@ -92,4 +84,3 @@ npm run server
 
 ---
 *Developed by the Nebula Team — Precision Engineering for Modern Collaboration.*
->>>>>>> b405167 (Initial commit - Nebula Notes App)
