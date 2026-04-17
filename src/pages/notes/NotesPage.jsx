@@ -8,10 +8,12 @@ import { Plus, Search, FileText } from "lucide-react";
 import NoteCard from "../../components/notes/NoteCard";
 import NoteEditor from "../../components/notes/NoteEditor";
 import Button from "../../components/common/Button";
+import { useToastStore } from "../../store/toastStore";
 
 export default function NotesPage() {
   const { user } = useAuth();
   const { filteredNotes, setNotes, addNote, updateNoteStore, deleteNoteStore, isLoading, setLoading, searchTerm, setSearchTerm } = useNotesStore();
+  const { showToast } = useToastStore();
   const [editingNote, setEditingNote] = useState(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
@@ -50,15 +52,17 @@ export default function NotesPage() {
         const res = await updateNote(noteData.id, noteData);
         updateNoteStore(res.data);
         handleLog("update", res.data);
+        showToast("Note updated successfully");
       } else {
         const res = await createNote(noteData);
         addNote(res.data);
         handleLog("create", res.data);
+        showToast("Note created successfully");
       }
       setIsEditorOpen(false);
       setEditingNote(null);
     } catch (err) {
-      console.error(err);
+      showToast("Something went wrong", "error");
     }
   };
 
@@ -69,10 +73,18 @@ export default function NotesPage() {
         await deleteNote(id);
         deleteNoteStore(id);
         if (noteToDelete) handleLog("delete", noteToDelete);
+        showToast("Note deleted", "info");
       } catch (err) {
-        console.error(err);
+        showToast("Failed to delete note", "error");
       }
     }
+  };
+
+  const handleShare = (note) => {
+    const shareUrl = `${window.location.origin}/share/${note.id}`;
+    navigator.clipboard.writeText(shareUrl);
+    showToast("Share link copied to clipboard!");
+    handleLog("share", note);
   };
 
   return (
@@ -123,10 +135,7 @@ export default function NotesPage() {
                   note={note}
                   onEdit={(n) => { setEditingNote(n); setIsEditorOpen(true); }}
                   onDelete={handleDelete}
-                  onShare={(n) => {
-                    alert("Sharing link generated!");
-                    handleLog("share", n);
-                  }}
+                  onShare={handleShare}
                 />
               </motion.div>
             ))}

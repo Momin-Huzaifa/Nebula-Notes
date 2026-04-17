@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getNote } from "../../api/notesApi";
 import { motion } from "framer-motion";
-import { FileText, ArrowLeft, Shield } from "lucide-react";
+import { FileText, ArrowLeft, Shield, Lock } from "lucide-react";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 
@@ -34,11 +34,14 @@ export default function SharedNote() {
     );
   }
 
-  if (!note) {
+  if (!note || note.isPublic === false) {
     return (
       <div className="max-w-xl mx-auto text-center px-6 py-20">
-        <h1 className="text-4xl font-display font-bold text-white mb-4">Note Not Found</h1>
-        <p className="text-gray-400 mb-8">This note may have been deleted or the link is invalid.</p>
+        <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20">
+          <Lock className="w-10 h-10 text-red-500" />
+        </div>
+        <h1 className="text-4xl font-display font-bold text-white mb-4">Note is Private</h1>
+        <p className="text-gray-400 mb-8">This note's sharing permissions have been restricted by the owner.</p>
         <Link to="/">
           <Button variant="secondary">Return Home</Button>
         </Link>

@@ -6,12 +6,15 @@ import Input from "../common/Input";
 import Card from "../common/Card";
 import { useSocket } from "../../context/SocketContext";
 import { useAuth } from "../../hooks/useAuth";
+import { useToastStore } from "../../store/toastStore";
+import { logActivity } from "../../api/activityApi";
 
 import CollaboratorsModal from "../modals/CollaboratorsModal";
 
 export default function NoteEditor({ note, onSave, onClose }) {
   const socket = useSocket();
   const { user, isEditor } = useAuth();
+  const { showToast } = useToastStore();
   
   const [title, setTitle] = useState(note?.title || "");
   const [content, setContent] = useState(note?.content || "");
@@ -50,6 +53,21 @@ export default function NoteEditor({ note, onSave, onClose }) {
     }
   }, [socket, note?.id]);
 
+  const handleShare = () => {
+    if (!note) return;
+    const shareUrl = `${window.location.origin}/share/${note.id}`;
+    navigator.clipboard.writeText(shareUrl);
+    showToast("Share link copied to clipboard!");
+    
+    // Log share action
+    logActivity({
+      action: "share",
+      userName: user?.name,
+      noteTitle: title,
+      createdAt: new Date().toISOString(),
+    }).catch(console.error);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -76,8 +94,11 @@ export default function NoteEditor({ note, onSave, onClose }) {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="gap-2" onClick={() => setIsCollabModalOpen(true)}>
+            <Button variant="ghost" size="sm" className="gap-2" onClick={handleShare} disabled={!note}>
               <Share2 className="w-4 h-4" /> Share
+            </Button>
+            <Button variant="ghost" size="sm" className="p-2 mr-2" onClick={() => setIsCollabModalOpen(true)} disabled={!note}>
+              <Users className="w-5 h-5" />
             </Button>
             <Button 
                 variant="primary" 

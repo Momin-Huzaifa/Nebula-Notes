@@ -1,15 +1,41 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, UserPlus, Shield, User, Trash2 } from "lucide-react";
+import { X, UserPlus, Shield, User, Trash2, Link as LinkIcon, Copy, Globe, Lock } from "lucide-react";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import Card from "../common/Card";
+import { updateNote } from "../../api/notesApi";
+import { useNotesStore } from "../../store/notesStore";
+import { useToastStore } from "../../store/toastStore";
 
 export default function CollaboratorsModal({ note, isOpen, onClose }) {
+  const { updateNoteStore } = useNotesStore();
+  const { showToast } = useToastStore();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("editor");
+  const [isUpdating, setIsUpdating] = useState(false);
 
   if (!isOpen) return null;
+
+  const shareUrl = `${window.location.origin}/share/${note?.id}`;
+
+  const togglePublic = async () => {
+    setIsUpdating(true);
+    try {
+      const res = await updateNote(note.id, { isPublic: !note.isPublic });
+      updateNoteStore(res.data);
+      showToast(res.data.isPublic ? "Link access enabled" : "Link access disabled", "info");
+    } catch (err) {
+      showToast("Failed to update sharing settings", "error");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    showToast("Link copied to clipboard!");
+  };
 
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/60 backdrop-blur-md">
@@ -28,6 +54,49 @@ export default function CollaboratorsModal({ note, isOpen, onClose }) {
             <X className="w-4 h-4" />
           </Button>
         </header>
+
+        {/* Public Link Toggle */}
+        <div className="glass p-4 rounded-2xl mb-8 border border-white/5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg ${note?.isPublic ? 'bg-green-500/10 text-green-400' : 'bg-gray-500/10 text-gray-400'}`}>
+                {note?.isPublic ? <Globe className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white">Public Link Access</p>
+                <p className="text-[10px] text-gray-500">{note?.isPublic ? "Anyone with the link can view" : "Only collaborators can access"}</p>
+              </div>
+            </div>
+            <button 
+              disabled={isUpdating}
+              onClick={togglePublic}
+              className={`w-10 h-6 rounded-full p-1 transition-colors ${note?.isPublic ? 'bg-primary' : 'bg-white/10'}`}
+            >
+              <motion.div 
+                animate={{ x: note?.isPublic ? 16 : 0 }}
+                className="w-4 h-4 bg-white rounded-full shadow-lg"
+              />
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {note?.isPublic && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="flex items-center gap-2 mt-4 pt-4 border-t border-white/5"
+              >
+                <div className="flex-grow glass px-3 py-2 rounded-lg text-[10px] text-gray-400 truncate">
+                  {shareUrl}
+                </div>
+                <Button variant="primary" size="sm" className="p-2 min-w-0" onClick={copyLink}>
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); alert("Invite sent!"); }}>
           <div className="flex flex-col sm:flex-row gap-2">
